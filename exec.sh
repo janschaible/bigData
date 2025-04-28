@@ -13,6 +13,8 @@ if ! docker ps --format '{{.Names}}' | grep -q "^$CONTAINER_NAME$"; then
         docker run \
             -dit \
             --name big_data \
+            -p 4040:4040 \
+            --hostname localhost \
             --mount type=bind,src"=$(pwd)",target=/opt/spark/work-dir/bigData \
              apache/spark \
              bash
