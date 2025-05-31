@@ -56,8 +56,8 @@ object PageRank {
     val gp = gWithSelfLoops.join(outCount).map{case(from, (to, count)) => (from, (to, (1.0/count)-(epsilon/count)))}
 
 
-    val gf = gr.union(gp)
-    checkProbabilities(gf)
+    val gf = gr.union(gp).cache()
+    //checkProbabilities(gf)
 
     val start = nodes.map(it => (it, 1.0/n))
     val res = iterateK(start, gf, 100)
@@ -82,6 +82,7 @@ object PageRank {
     val spark = SparkSession.builder().appName("PageRank").getOrCreate()
     pageRank(spark)
     // testIterate(spark)
+    // Thread.sleep(100000000)
     spark.stop()
   }
 }
